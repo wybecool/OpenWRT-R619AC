@@ -77,7 +77,11 @@ jobs:
       run: cd openwrt && ./scripts/feeds update -a
 
     - name: Install feeds
-      run: cd openwrt && ./scripts/feeds install -a
+      run: |
+       sudo cd openwrt 
+       sudo rm -rf ./smpackage/luci-app-bypass/
+       sudo  clone https://github.com/tianiue/luci-app-bypass ./smpackage/
+       sudo ./scripts/feeds install -a
 
     - name: Load custom configuration
       run: |
