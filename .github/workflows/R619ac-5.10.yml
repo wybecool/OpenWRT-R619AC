@@ -24,12 +24,12 @@ on:
 #     types: started
     
 env:
-  REPO_URL: https://github.com/openwrt/openwrt.git
+  REPO_URL: https://github.com/Mike-qian/openwrt.git
   REPO_BRANCH: master
   FEEDS_CONF: feeds.conf.default
   CONFIG_FILE: 5.10.config
-  #DIY_P1_SH: diy-part1.sh
-  #DIY_P2_SH: diy-part2.sh
+  DIY_P1_SH: diy-part1.sh
+  DIY_P2_SH: diy-part2.sh
   UPLOAD_BIN_DIR: true
   UPLOAD_FIRMWARE: true
   UPLOAD_COWTRANSFER: false
