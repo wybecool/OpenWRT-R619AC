@@ -24,7 +24,7 @@ on:
 #     types: started
     
 env:
-  REPO_URL: https://github.com/openwrt/openwrt.git
+  REPO_URL: https://github.com/Lienol/openwrt.git
   REPO_BRANCH: openwrt-22.03
   FEEDS_CONF: feeds.conf.default
   CONFIG_FILE: 5.10.config
