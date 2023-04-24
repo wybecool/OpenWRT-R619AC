@@ -74,7 +74,7 @@ jobs:
         cd openwrt
         $GITHUB_WORKSPACE/$DIY_P1_SH
     - name: Update feeds
-      run: cd openwrt && ./scripts/feeds update -a && ./scripts/feeds install libpam && ./scripts/feeds install luci-base && ./scripts/feeds install liblzma && ./scripts/feeds install libnetsnmp && ./scripts/feeds install redsocks2
+      run: cd openwrt && ./scripts/feeds update -a && ./scripts/feeds install libpam && ./scripts/feeds install luci-base && ./scripts/feeds install liblzma && ./scripts/feeds install libnetsnmp && ./scripts/feeds install redsocks2 &&  ./scripts/feeds install luci-theme-argon &&  ./scripts/feeds install miniupnpd-iptables
 
     - name: Install feeds
       run: cd openwrt && ./scripts/feeds install -a
