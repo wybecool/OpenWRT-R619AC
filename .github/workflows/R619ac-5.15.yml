@@ -8,7 +8,7 @@
 # Description: Build OpenWrt using GitHub Actions
 #
 
-name: Build imm x86
+name: Build imm R619ac
 
 on:
   repository_dispatch:
