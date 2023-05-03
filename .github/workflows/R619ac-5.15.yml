@@ -14,7 +14,8 @@ on:
   repository_dispatch:
   workflow_dispatch:
   #schedule:
-  #  - cron: 0 16 4,9,14,19,24,28,31 * *
+  schedule:
+   - cron: 10 */12 * * *
 
 env:
   REPO_URL: https://github.com/x-wrt/x-wrt.git
