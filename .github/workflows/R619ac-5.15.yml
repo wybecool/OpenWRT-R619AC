@@ -165,6 +165,7 @@ jobs:
       run: |
         echo "::set-output name=release_tag::$(date +"%Y.%m.%d-%H%M")"
         touch release.txt
+        echo "竞斗云openwrt-5.15" >> release.txt
         echo "::set-output name=status::success"
 
     - name: 发布固件
