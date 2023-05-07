@@ -173,7 +173,7 @@ jobs:
         [ $UPLOAD_WETRANSFER = true ] && echo "🔗 [WeTransfer](${{ steps.wetransfer.outputs.url }})" >> release.txt
         echo "::set-output name=status::success"
 
-    - name: Upload firmware to release
+    - name: 发布固件
       uses: softprops/action-gh-release@v1
       if: steps.tag.outputs.status == 'success' && !cancelled()
       env:
@@ -183,17 +183,17 @@ jobs:
         body_path: release.txt
         files: ${{ env.FIRMWARE }}/*
 
-    - name: Remove old Workflow
+    - name: 清理workflow
       uses: GitRML/delete-workflow-runs@main
       with:
-        retain_days: 30
+        retain_days: 1
         keep_minimum_runs: 3
 
-    - name: Remove old Releases
+    - name: 清理Releases
       uses: dev-drprasad/delete-older-releases@v0.1.0
       if: env.UPLOAD_RELEASE == 'true' && !cancelled()
       with:
-        keep_latest: 14
+        keep_latest: 3
         delete_tags: true
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
