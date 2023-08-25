@@ -1,5 +1,4 @@
 src-git-full packages https://github.com/x-wrt/packages.git
-#src-git-full packages https://github.com/openwrt/packages.git
 src-git-full luci https://github.com/x-wrt/luci.git
 src-git-full routing https://github.com/x-wrt/routing.git
 src-git-full telephony https://github.com/x-wrt/telephony.git
