@@ -108,12 +108,12 @@ jobs:
         $GITHUB_WORKSPACE/$DIY_P1_SH
 
     - name: 更新 feeds
-      run: cd openwrt && ./scripts/feeds update -a
-
+      run: cd openwrt
+           rm -rf feeds/packages/lang/golang
+           git clone https://github.com/sbwml/packages_lang_golang -b 22.x feeds/packages/lang/golang
+           ./scripts/feeds update -a
     - name: 安装 feeds
       run: |
-          rm -rf feeds/packages/lang/golang
-          git clone https://github.com/sbwml/packages_lang_golang -b 22.x feeds/packages/lang/golang
           cd openwrt && ./scripts/feeds install -a
     - name: 加载自定义配置
       run: |
