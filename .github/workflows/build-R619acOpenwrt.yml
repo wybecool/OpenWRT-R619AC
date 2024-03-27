@@ -94,7 +94,7 @@ jobs:
         ln -sf /workdir/openwrt $GITHUB_WORKSPACE/openwrt
 
     - name: 缓存构建动作
-      uses: Mike/cachewrtbuild@main
+      uses: stupidloud/cachewrtbuild@main
       with:
         ccache: 'true'
         mixkey: ${{ matrix.os }}-${{ matrix.ARCHITECTURE }}-${{ matrix.REPO_BRANCH }}
@@ -190,18 +190,17 @@ jobs:
         body_path: release.txt
         files: ${{ env.FIRMWARE }}/*
 
-    - name: 删除运行记录
+    - name: 删除工作流
       uses: Mattraks/delete-workflow-runs@main
       with:
-        retain_days: 1
+        retain_days: 2
         keep_minimum_runs: 1
-        token: ${{ env.GITHUB_TOKEN }}
 
-    - name: 删除自动发布的旧固件
+    - name: 删除旧版本
       uses: dev-drprasad/delete-older-releases@master
       if: env.UPLOAD_RELEASE == 'true' && !cancelled()
       with:
-        keep_latest: 3
+        keep_latest: 6
         delete_tags: true
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
