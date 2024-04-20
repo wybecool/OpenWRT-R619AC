@@ -20,3 +20,6 @@ sed -i 's/192.168.1.1/192.168.3.1/g' package/base-files/files/bin/config_generat
 # git clone https://github.com/Jason6111/luci-app-netdata ./feeds/luci/applications/luci-app-netdata/  
 #rm -rf ./feeds/luci/applications/luci-app-bypass/  
 #git clone https://github.com/tianiue/luci-app-bypass ./feeds/luci/applications/luci-app-bypass/ 
+
+wget -P ./target/linux/ipq40xx/base-files/etc/hotplug.d/block/ https://raw.githubusercontent.com/Mike-qian/dns2tcp/main/20-udisk-mount
+chmod 0755 target/linux/ipq40xx/base-files/etc/hotplug.d/block/20-udisk-mount
