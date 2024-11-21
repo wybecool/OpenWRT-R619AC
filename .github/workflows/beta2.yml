@@ -1,4 +1,4 @@
-name: beta-builder
+name: beta-builder2
 
 on:
   repository_dispatch:
