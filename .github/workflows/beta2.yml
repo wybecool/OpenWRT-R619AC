@@ -72,6 +72,8 @@ jobs:
       uses: stupidloud/cachewrtbuild@main
       with:
         ccache: 'true'
+        toolchain: 'true'
+        skip: 'true'
         mixkey: ${{ matrix.os }}-${{ matrix.ARCHITECTURE }}-${{ matrix.REPO_BRANCH }}
         prefix: ${{ github.workspace }}/openwrt
 
