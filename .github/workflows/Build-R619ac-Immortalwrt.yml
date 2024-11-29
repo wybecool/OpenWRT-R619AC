@@ -170,7 +170,7 @@ jobs:
         echo "release_tag=$(date +"%Y.%m.%d-%H.%M")" >> ${GITHUB_OUTPUT}
         touch release.txt
         echo "
-        💻 路由: P&W R619AC 128M
+        💻 路由: P&W R619AC 128M Immortalwrt
 
         📂 源码: ${{ env.REPO_URL }}
 
