@@ -1,4 +1,4 @@
-name: Build-R619ac-Imm
+name: Build-R619ac-Immortalwrt
 
 on:
   repository_dispatch:
