@@ -192,7 +192,7 @@ jobs:
         🔒 密码: 无密码 
 
         🚧 软件包-配置opkg-更新以下源
-        src/gz openwrt_kiddin9 https://dl.openwrt.ai/latest/packages/arm_cortex-a7_neon-vfpv4/kiddin9
+        24.10使用的是APK暂无第三方软件源
         
         " >> release.txt
         echo "status=success" >> ${GITHUB_OUTPUT}
