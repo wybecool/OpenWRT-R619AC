@@ -9,7 +9,7 @@ on:
         required: false
         default: 'false'
   schedule:
-   - cron: 0 5 * * *
+     - cron: 0 5 * * *
 
 env:
   REPO_URL: https://github.com/immortalwrt/immortalwrt.git
@@ -140,83 +140,83 @@ jobs:
         make -j$(nproc) || make -j1 || make -j1 V=s
         echo "FILE_DATE=_$(date +"%Y%m%d%H%M")" >> $GITHUB_ENV
         grep '^CONFIG_TARGET.*DEVICE.*=y' .config | sed -r 's/.*DEVICE_(.*)=y/\1/' > DEVICE_NAME
-        [-s device_name] && eCho“ device_name = _ $（cat device_name）>> $ github_env
-        回声“状态=成功” >> $ {github_output}
+        [ -s DEVICE_NAME ] && echo "DEVICE_NAME=_$(cat DEVICE_NAME)" >> $GITHUB_ENV
+        echo "status=success" >> ${GITHUB_OUTPUT}
 
-    - 名称：检查磁盘空间
-      如果：（（（！取消（））
-      运行：DF -HT
+    - name: 检查磁盘空间
+      if: (!cancelled())
+      run: df -hT
 
-    -名称：上传bin文件夹
-      用途：操作/动作/upload-artifact@main
-      如果：steps.compile.outputs.status == '成功' && env.upload_bin_dir == 'true'
-      和：
-        ：openwrt_bin $ {  { env.device_name }  } $ {  { env.file_date }}  }}}}} }
-        路径：OpenWrt/bin
+    - name: 上传 bin 文件夹
+      uses: actions/upload-artifact@main
+      if: steps.compile.outputs.status == 'success' && env.UPLOAD_BIN_DIR == 'true'
+      with:
+        name: OpenWrt_bin${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
+        path: openwrt/bin
 
-    - 名称：整理固件文件
-      id：组织
-      如果：env.upload_firmware == 'true' && ！取消（）
-      运行：|
-        CD OpenWrt/bin/targets/*/*
-        RM -RF软件包
-        echo“固件= $ pwd” >> $ github_env
-        回声“状态=成功” >> $ { github_output }
+    - name: 整理固件文件
+      id: organize
+      if: env.UPLOAD_FIRMWARE == 'true' && !cancelled()
+      run: |
+        cd openwrt/bin/targets/*/*
+        rm -rf packages
+        echo "FIRMWARE=$PWD" >> $GITHUB_ENV
+        echo "status=success" >> ${GITHUB_OUTPUT}
 
-    - 名称：上传固件目录
-      用途：Action/Action/upload-Artifact@main
-      如果：steps.organize.outputs.status == '成功' && ！取消（）
-      和：
-        ：OpenWrt_firmware $ {   { env.device_name }   } $ {   { env.file_date }}  }}} }
-        路径：$ {   { env.firmware }   }
+    - name: 上传固件目录
+      uses: actions/upload-artifact@main
+      if: steps.organize.outputs.status == 'success' && !cancelled()
+      with:
+        name: OpenWrt_firmware${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
+        path: ${{ env.FIRMWARE }}
 
-    -名称：生成发布标签
-      id：标签
-      如果：steps.compile.outputs.status == 'Success' && env.upload_release == 'true'''''''  ''）
-      运行：|
-echo“ Release_tag = $（date +” y。
-        触摸realease.txt
-        回声”
-        💻💻：p＆w r619ac 1.28亿不朽
+    - name: 生成发布标签
+      id: tag
+      if: steps.compile.outputs.status == 'success' && env.UPLOAD_RELEASE == 'true' && !cancelled()
+      run: |
+        echo "release_tag=$(date +"%Y.%m.%d-%H.%M")" >> ${GITHUB_OUTPUT}
+        touch release.txt
+        echo "
+        💻 路由: P&W R619AC 128M Immortalwrt
 
-        📂📂：$ {  { env.repo_url }  }} }  }
+        📂 源码: ${{ env.REPO_URL }}
 
-        🌳🌳：$ { { env.repo_branch }} } }
+        🌳 分支: ${{ env.REPO_BRANCH }}
 
-        ⏱️编译时间：$（$ （日期 +“ yy yy％m”％d h时％h时％h时％m分M分”）
+        ⏱️ 编译时间: $(date +"%Y年%m月%d日%H时%M分")
 
-        🌐：192.168.1.1
+        🌐 管理地址: 192.168.1.1
 
-        👤：根
+        👤 用户名: root
 
-        🔒：无密码
+        🔒 密码: 无密码 
 
-        🚧-配置-opkg-更新以下源
-        src/gz OpenWrt_kidDin9 https://dl.openwrt.ai/latest/packages/arm_cortex-a7_neon-vfpv4/kiddin9
+        🚧 软件包-配置opkg-更新以下源
+        src/gz openwrt_kiddin9 https://dl.openwrt.ai/latest/packages/arm_cortex-a7_neon-vfpv4/kiddin9
         
-        “ >> Release.txt
-        回声“状态=成功” >> $ { github_output }
+        " >> release.txt
+        echo "status=success" >> ${GITHUB_OUTPUT}
 
-    - 名称：自动发布固件到发行
-      用途：SoftProps/Action-GH-REAles@V2
-      如果：steps.tag.outputs.status == '成功' && ！取消（）
-      env：
-        github_token：$ {  { necrets.repo_token }}  }
-      和：
-        tag_name：$ {  { steps.tag.outputs.release_tag }} }  }
-        Body_Path：Repares.txt
-        文件：$ {  { env.firmware }  } /*
+    - name: 自动发布固件到 Releases
+      uses: softprops/action-gh-release@v2
+      if: steps.tag.outputs.status == 'success' && !cancelled()
+      env:
+        GITHUB_TOKEN: ${{ secrets.REPO_TOKEN }}
+      with:
+        tag_name: ${{ steps.tag.outputs.release_tag }}
+        body_path: release.txt
+        files: ${{ env.FIRMWARE }}/*
 
-    - 名称：删除运行记录
-      用途：mattraks/delete-workflow-runs@main
-      和：
-        retain_days：7
-        keep_minimum_runs：7
-        令牌：$ {   { env.github_token }   }
+    - name: 删除运行记录
+      uses: Mattraks/delete-workflow-runs@main
+      with:
+        retain_days: 7
+        keep_minimum_runs: 7
+        token: ${{ env.GITHUB_TOKEN }}
 
-    -名称：删除自动发布的旧固件
-      用途：dev-drprasad/delete oper-relealease@master
-      如果：env.upload_release == 'true' && ！取消（）
-      和：
-        keep_latest：7
-        delete_tags：True
+    - name: 删除自动发布的旧固件
+      uses: dev-drprasad/delete-older-releases@master
+      if: env.UPLOAD_RELEASE == 'true' && !cancelled()
+      with:
+        keep_latest: 7
+        delete_tags: true
